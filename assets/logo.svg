@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 115.27 115.27">
+  <defs>
+    <style>
+      .cls-1 {
+        font-family: GondensDEMO-Regular, 'Gondens DEMO';
+        font-size: 35.93px;
+      }
+
+      .cls-1, .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        fill: #231f20;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <rect class="cls-3" width="115.27" height="115.27" rx="24.23" ry="24.23"/>
+    <text class="cls-1" transform="translate(22.4 73.3)"><tspan x="0" y="0">ASAP</tspan></text>
+    <polygon class="cls-2" points="60.99 97.78 60.99 75.47 56.52 75.47 56.52 97.78 50.59 97.78 58.75 105.95 66.92 97.78 60.99 97.78"/>
+  </g>
+</svg>
