@@ -1,0 +1,34 @@
+#windowContainer {
+    background-color: {{primary_bg}};
+    border: 1px solid {{border_color}};
+    border-radius: 10px;
+}
+
+#minBtn, #maxBtn, #closeBtn {
+    background: transparent;
+    color: {{text_main}};
+    border: none;
+    font-size: 14px;
+}
+
+#closeBtn:hover {
+    background-color: {{danger}};
+}
+
+#sidebar {
+    background-color: {{secondary_bg}};
+    border-right: 1px solid {{border_color}};
+}
+
+/* Custom progress bar using the accent color */
+QProgressBar {
+    border: 1px solid {{border_color}};
+    border-radius: 5px;
+    background-color: {{secondary_bg}};
+    text-align: center;
+}
+
+QProgressBar::chunk {
+    background-color: {{accent_color}};
+    width: 10px;
+}
