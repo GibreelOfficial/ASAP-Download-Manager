@@ -1,6 +1,6 @@
 #windowContainer {
     background-color: {{primary_bg}};
-    border: 1px solid {{border_color}};
+    border: 2px solid {{border_color}};
     border-radius: 10px;
 }
 
@@ -8,11 +8,28 @@
     background: transparent;
     color: {{text_main}};
     border: none;
-    font-size: 14px;
+    font-size: 16px;
+    /* Uniform dimensions */
+    min-width: 18px;
+    max-width: 18px;
+    min-height: 18px;
+    max-height: 18px;
+    /* Rounded corners */
+    border-radius: 6px; 
+}
+
+#CustomTitleBar {
+    border-bottom: 2px solid {{border_color}};
 }
 
 #closeBtn:hover {
     background-color: {{danger}};
+}
+#minBtn:hover {
+    background-color: {{ready}};
+}
+#maxBtn:hover {
+    background-color: {{gogo}};
 }
 
 #sidebar {
