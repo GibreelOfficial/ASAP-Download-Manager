@@ -1,48 +1,60 @@
 import sys
-import os
-from PySide6.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout
 from PySide6.QtCore import Qt
 
-# Importing your custom components
 from components.framelessWindow import FramelessWindow
+from components.main_view import MainContentView
+from components.sidebar import Sidebar
+from components.statusBar import StatusBar
 from utils.theme_loader import load_stylesheet
 
 class ASAPApp(FramelessWindow):
     def __init__(self):
         super().__init__()
-        
         self.setWindowTitle("ASAP Download Manager")
-        self.resize(950, 600)
-        
-        # Adding dummy content to the content_area defined in FramelessWindow
+        self.resize(1100, 700)
         self.setup_body()
 
     def setup_body(self):
-        # This layout goes inside the content_area of the frameless shell
-        layout = QVBoxLayout(self.content_area)
-        layout.setContentsMargins(20, 20, 20, 20)
+        # Horizontal layout for Sidebar + Main Content
+        central_layout = QHBoxLayout(self.content_area)
+        central_layout.setContentsMargins(0, 0, 0, 0)
+        central_layout.setSpacing(0)
+
+        self.sidebar = Sidebar(self)
+        self.main_content = MainContentView(self)
         
-        placeholder_label = QLabel("Download Manager Content Goes Here")
-        placeholder_label.setAlignment(Qt.AlignCenter)
-        placeholder_label.setStyleSheet("font-size: 18px; color: #666;")
+        central_layout.addWidget(self.sidebar)
+        central_layout.addWidget(self.main_content, 1)
+
+        # Status Bar at the bottom of the container
+        self.status_bar = StatusBar(self)
+        self.container_layout.addWidget(self.status_bar)
+
+    def apply_theme_to_all(self, checked):
+        """Called by the TitleBar toggle to propagate changes"""
+        dynamic_color = "#222222" if checked else "#ffffff"
         
-        layout.addWidget(placeholder_label)
+        self.sidebar.update_theme_icons(dynamic_color)
+        self.main_content.update_theme_icons(dynamic_color)
+        self.status_bar.update_theme_icons(dynamic_color)
 
 def main():
     app = QApplication(sys.argv)
-    
-    # 1. Load the dynamic theme from your JSON/QSS logic
-    # Make sure you have 'dark_neon.json' in your themes folder
-    try:
-        theme_style = load_stylesheet("dark_neon")
-        app.setStyleSheet(theme_style)
-    except FileNotFoundError as e:
-        print(f"Warning: Theme files not found. Starting with default style. {e}")
+    app.setAttribute(Qt.AA_EnableHighDpiScaling)
+    app.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
-    # 2. Initialize and show the window
+    try:
+        app.setStyleSheet(load_stylesheet("dark_neon"))
+    except:
+        pass
+
     window = ASAPApp()
-    window.show()
     
+    # Connect the TitleBar toggle to our multi-component update method
+    window.title_bar.theme_toggle.toggled.connect(window.apply_theme_to_all)
+    
+    window.show()
     sys.exit(app.exec())
 
 if __name__ == "__main__":

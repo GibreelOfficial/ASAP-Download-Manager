@@ -43,9 +43,14 @@ class CustomTitleBar(QWidget):
         self.title_text = QLabel("ASAP Download Manager")
         self.title_text.setObjectName("titleLabel")
         
-        self.btn_min = QPushButton("-")
-        self.btn_max = QPushButton("▢")
-        self.btn_close = QPushButton("✕")
+        icon_color = "#ffffff" # Default for Dark mode
+        
+        self.btn_min = QPushButton()
+        self.btn_min.setIcon(qta.icon('fa5s.minus', color=icon_color))
+        self.btn_max = QPushButton()
+        self.btn_max.setIcon(qta.icon('fa5s.square', color=icon_color))
+        self.btn_close = QPushButton()
+        self.btn_close.setIcon(qta.icon('fa5s.times', color=icon_color))
         
         self.btn_min.setObjectName("minBtn")
         self.btn_max.setObjectName("maxBtn")
@@ -96,16 +101,30 @@ class CustomTitleBar(QWidget):
     def switch_theme(self, checked):
         theme_name = "light_neon" if checked else "dark_neon"
         try:
+            # 1. Load the stylesheet
             new_style = load_stylesheet(theme_name)
             QApplication.instance().setStyleSheet(new_style)
-            # 1. Update the icon using QtAwesome
+            # 2. Define the new dynamic color
+            # Light mode (checked) = Dark Gray/Black, Dark mode = White
+            dynamic_color = "#222222" if checked else "#ffffff"
+            # 3. Update Window Control Icons
+            self.btn_min.setIcon(qta.icon('fa5s.minus', color=dynamic_color))
+            self.btn_max.setIcon(qta.icon('fa5s.square', color=dynamic_color))
+            self.btn_close.setIcon(qta.icon('fa5s.times', color=dynamic_color))
+            # 4. Update the Toggle and Sun/Moon icon
             self.update_icon(checked)
-            # 2. Update toggle knob/border color
-            toggle_color = "#222222" if checked else "#ffffff"
-            self.theme_toggle.set_theme_colors(toggle_color)
-            # 3. Update title text color
-            text_color = "#000000" if checked else "#ffffff"
-            self.title_text.setStyleSheet(f"color: {text_color};")
+            self.theme_toggle.set_theme_colors(dynamic_color)
+            # 5. Update title text color
+            self.title_text.setStyleSheet(f"color: {dynamic_color};")
+            # 7 Update Main Content (Accessing via the parent ASAPApp)
+            if hasattr(self.parent, 'main_content'):
+                self.parent.main_content.update_theme_icons(dynamic_color)
+            
+            # 8 Update Sidebar Gear (If you stored the reference in ASAPApp)
+            if hasattr(self.parent, 'sidebar_settings_icon'):
+                self.parent.sidebar_settings_icon.setPixmap(
+                    qta.icon('fa5s.cog', color=dynamic_color).pixmap(25, 25)
+                )
             
         except Exception as e:
             print(f"Theme Error: {e}")
